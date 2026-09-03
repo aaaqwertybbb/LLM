@@ -59,11 +59,11 @@ for t in range(block_size):
 # 9. THE BATCH GENERATOR
 batch_size = 4 # Number of independent text sequences to process in parallel
 
-# This is the point where everything turns to confusion for me
-
 def get_batch(split):
     # Select whether we are pulling from the training or validation set
     data = train_data if split == 'train' else val_data
+
+    # This is the point where everything turns to confusion for me
     
     # Generate random starting points in the data array
     # We subtract block_size so we don't accidentally overflow past the end of the text
