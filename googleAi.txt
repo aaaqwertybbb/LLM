@@ -363,6 +363,39 @@ print(f"Validation data size: {len(val_data)} tokens")
 < - Show me how to create Inputs and Targets chunks (the X and Y blocks the AI uses to guess the next letter)
 < - Show me how to wrap that chunking logic into a Batch Generator so our model can read multiple lines of text at once
 
+> Which would you recommend first?
 
+< I highly recommend creating the Inputs and Targets chunks first.
+<
+< Before building a complex "Batch Generator" loop that handles multiple chunks at once, it is much easier to understand how a single input chunk maps to a target chunk.
+<
+< In an LLM, the model learns by looking at a chunk of text (the Input, often called X) and trying to predict the very next character (the Target, often called Y).
+<
+< By building just one chunk first, you can print it out and visually see exactly how the AI shifts time forward by one character to check its own work.
 
+(
+  I'm realizing I've been running test_torch.py over and over after copying and pasting the code.
+  Kind of obvious when you realize none of the prints were changing...
+  
+  My train.py doesn't actually run.
+
+```myConsoleOutput
+Unique characters (Vocabulary Size): 8
+Traceback (most recent call last):
+  File "C:\Users\hunte\Repos\New folder (6)\LLM\train.py", line 42, in <module>
+    encoded_phrase = encode(sample_phrase)
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hunte\Repos\New folder (6)\LLM\train.py", line 32, in encode
+    return [char_to_int[c] for c in string_input]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hunte\Repos\New folder (6)\LLM\train.py", line 32, in <listcomp>
+    return [char_to_int[c] for c in string_input]
+            ~~~~~~~~~~~^^^
+KeyError: 'h'
+```
+
+I need to finish the current response first though.
+)
+
+< ...
 
