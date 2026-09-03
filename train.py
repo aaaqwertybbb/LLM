@@ -68,6 +68,8 @@ def get_batch(split):
     # Generate random starting points in the data array
     # We subtract block_size so we don't accidentally overflow past the end of the text
     ix = torch.randint(len(data) - block_size, (batch_size,))
+    # ^
+    # torch.randint(low, high); ???
     
     # Stack the random inputs and targets into matrices
     x_batch = torch.stack([data[i:i+block_size] for i in ix])
