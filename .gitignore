@@ -1,0 +1,4 @@
+# (PyTorch model weights)
+*.pt
+
+__pycache__/
