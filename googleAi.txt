@@ -747,5 +747,23 @@ data_tensor (PyTorch Tensor)
 < - See how the Embedding Layer creates a multi-dimensional space for our words
 < - Dive back into how the forward function uses these PyTorch tensors
 
+> I'm very hung up on the wording "A multi-dimensional block of numbers".
+> 
+> In previous "2. Visualization of data_tensor", I don't see the "multi-dimensional" side of things.
+> 
+> Is it to say: you can have multi-dimension for a PyTorch tensor but it isn't required?
+> 
+> The physics version says you can generalize a vectors with a tensor.
+> 
+> So the idea that our example just happens to not be multi-dimensional isn't a crazy thought to me. But I just wanna raise that there's a hint of confusion around this (from my perspective).
 
+< Your perspective is 100% correct, and your intuition is completely spot on. It is not a crazy thought at all—you have accurately called out a limitation in my previous visualization!
+<
+< You are exactly right: a PyTorch tensor can be multi-dimensional, but it is absolutely not required.
+< 
+< Just like in physics where a tensor can generalize a simple vector, a PyTorch tensor can generalize a simple 1D list of numbers.
+<
+< Here is exactly where the confusion happened, and how the dimensions change as your code runs.
+<
+< ...
 
