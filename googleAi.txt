@@ -658,4 +658,56 @@ Predictions matrix shape (logits): torch.Size([4, 8, 33])
 Initial raw error score (loss):     4.0315
 ```
 
+> I have a question about the earlier code.
+> 
+> I think I understand everything up until this line.
+> 
+> 'data_tensor = torch.tensor(all_encoded_data, dtype=torch.long)'
+> 
+> Can you create a visualization of the 'all_encoded_data' and then another visualization of the 'data_tensor'?
 
+< To visualize this transition, we need to look at how data changes from a standard computer memory structure into a heavy-duty AI Tensor optimized for graphics cards (GPUs).
+<
+< Let's assume our input.txt dataset is simply the phrase "hello world", and our tokenizer maps h to 1, e to 2, l to 3, and so on.
+<
+< Here is the structural difference between the two variables:
+<
+< 1. Visualization of all_encoded_data
+<
+< In standard Python, all_encoded_data is a List. In computer memory, a Python list is a collection of separate pointers scattered around, wrapped in a lot of "metadata"
+< (extra information about what type of data it is, how long it is, etc.). It looks like this:
+< all_encoded_data (Python List)
+< ```aVisualization
+┌───┐    ┌───┐    ┌───┐    ┌───┐    ┌───┐    ┌───┐
+│ 1 │───>│ 2 │───>│ 3 │───>│ 3 │───>│ 4 │───>│ 5 │ ...
+└───/    └───/    └───/    └───/    └───/    └───/
+ [h]      [e]      [l]      [l]      [o]      [ ]
+< ```
+< - Memory layout: Fragmented. The numbers are not necessarily next to each other in your computer's RAM hardware.
+< - Math capabilities: None. You cannot multiply this entire list by a matrix instantly. Python would have to loop through each item one by one, which is very slow.
+
+< 2. Visualization of data_tensor
+< When you execute 'torch.tensor(all_encoded_data, dtype=torch.long)', PyTorch strips away all the Python metadata, grabs the raw integers,
+< and packs them into a Tensor. It looks like this:
+< ```aVisualization
+data_tensor (PyTorch Tensor)
+┌────────────────────────────────────────────────────────┐
+│ Shape: [11]  |  DataType: 64-bit Integer (torch.long)  │
+├───────────┬───────────┬───────────┬───────────┬────────────┤
+│     1     │     2     │     3     │     3     │     4      │ ...
+└───────────┴───────────┴───────────┴───────────┴────────────┘
+ [0x0001]    [0x0002]    [0x0003]    [0x0004]    [0x0005]  <-- (Contiguous Hardware Addresses)
+< ```
+< 
+< - Memory layout: Contiguous. The numbers are locked side-by-side in a perfect, solid block of hardware memory.
+< - Math capabilities: Extreme parallel speed. Because the data is structured as a uniform block, PyTorch can hand this entire block directly to a graphics card (GPU) or AI chip,
+<   which can perform mathematical operations on millions of these numbers at the exact same fraction of a microsecond.
+< 
+< # Summary
+< Think of all_encoded_data like a box of loose, individual number blocks. Think of data_tensor like melting those blocks down into a solid,
+< standardized steel beam that fits perfectly into the machinery of a neural network.
+<
+< Now that you see how the data is packed into a tensor, would you like to:
+< - See how we slice this solid tensor into the train_data and val_data blocks
+< - Move on to explaining the forward function in our model class
+< - See how the Embedding Layer turns these flat tensor numbers into multi-dimensional vectors
