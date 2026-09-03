@@ -1029,3 +1029,73 @@ Where would you like to explore next inside this blueprint?
 - Show me how to write the Training Loop to make this model actually learn from its mistakes
 - Explain what B, T, C = logits.shape stands for
 
+> "Explain what B, T, C = logits.shape stands for"
+
+< In machine learning, B, T, and C are the three foundational dimensions that define how data is structured as it moves through a language model.
+<
+< When you ask PyTorch for logits.shape, it returns three numbers representing a 3-Dimensional block of data (a Rank 3 Tensor).
+< 
+< Here is exactly what each letter stands for, what it means for your model, and how they combine into a 3D shape:
+< 
+< The Breakdown of B, T, and C:
+< 
+< 1. B stands for Batch Size
+< - What it means: The number of independent text streams we are processing in parallel.
+< - In your code: We set this to 4. This means the model is processing 4 completely different sections of text from your dataset at the exact same microsecond.
+< 
+< 2. T stands for Time (or Sequence Length)
+< - What it means: The number of characters inside a single text sequence (the context window).
+<   It is called "Time" because text moves forward chronologically—character 1 happens at time step 1, character 2 at time step 2, etc.
+< - In your code: We set this to 8 (block_size). Each batch contains a sequence of 8 characters.
+<
+< 3. C stands for Channels (or Vocabulary Size)
+< - What it means: The number of unique possibilities the model can predict. For a Bigram model, "Channels" is exactly equal to your vocab_size.
+< - In your code: If your text has 65 unique characters, then C = 65. For every single character position, the model must output 65 separate prediction scores (one score for every possible letter in the alphabet).
+<
+< # Visualizing the 3D Block (B, T, C)
+< |
+< When your data is shaped as (4, 8, 65), it forms a literal 3D grid in your computer's memory. You can think of it like a 3D chest of drawers:
+<
+< ```aVisualization
+               C = Channels (65 prediction scores per letter)
+               ┌────────────────────────┐
+              /                        /│
+             /                        / │
+            ┌────────────────────────┐  │
+           /                        /│  │
+          /                        / │  │
+         ┌────────────────────────┐  │  ├─ B = Batch Size (4 independent lines)
+        /                        /│  │ /
+       /                        / │  │/
+      ┌────────────────────────┐  │  /
+      │ 'h' │ 'e' │ 'l' │ 'l' │  │ /
+      ├────────────────────────┤  │/
+      │  65 scores for 'h'...  │ /
+      └────────────────────────┘/
+       └───┬───┬───┬───┬───┬───┘
+         T = Time Steps (8 characters long)
+< ```
+<
+< # Why we have to flatten them to calculate Loss
+<
+< Your prediction grid is a 3D block (B, T, C).
+< However, PyTorch's grading function (F.cross_entropy) doesn't understand 3D blocks; it only wants a 2D matrix of guesses and a 1D list of correct answers.
+<
+< That is why we use .view():
+< ```python
+logits_flat = logits.view(B*T, C)  # Squishes (4, 8, 65) into (32, 65)
+targets_flat = targets.view(B*T)   # Squishes (4, 8)     into (32)
+< ```
+< 
+< Instead of 4 separate lines of 8 characters, we combine them into a single long column of 32 individual character predictions (B * T), each containing 65 scores (C).
+< 
+< Now PyTorch can look down that list of 32 predictions, compare them to the 32 true answers, and give you your overall error score!
+< 
+< Where should we head next with our model class?
+< - Show me how to write the Training Loop to make the model learn and lower its loss
+< - Show me how to add a Generation function to the class so the model can type out its own text
+
+
+
+
+
