@@ -765,5 +765,63 @@ data_tensor (PyTorch Tensor)
 <
 < Here is exactly where the confusion happened, and how the dimensions change as your code runs.
 <
-< ...
+< # The Evolution of Dimensions in Your Code
+< |
+< In the step you asked about (data_tensor = torch.tensor(...)), the data is 1-Dimensional.
+< It is a single, flat, linear sequence of characters. It is technically a Rank 1 Tensor, which is just the computer-science word for a vector.
+<
+< The "multi-dimensional block" aspect enters the picture just a few lines later in your code when we introduce Batches and Embeddings.
+<
+< Here is how the exact same data expands in dimensionality as it flows through train.py:
+```aVisualization
+1D TENSOR (Rank 1) - What you saw in step 6
+A flat string of characters:
+[ h, e, l, l, o,   w, o, r, l, d ]
+Shape: (11)
+────────────────────────────────────────────────────────────────────────
+2D TENSOR (Rank 2) - Created by the Batch Generator (Step 9)
+Multiple sentences stacked like a grid (rows and columns):
+┌───┬───┬───┬───┐
+│ h │ e │ l │ l │  <- Batch 1
+├───┼───┼───┼───┤
+│ w │ o │ r │ l │  <- Batch 2
+└───┴───┴───┴───┘
+Shape: (batch_size, block_size) -> e.g., (2, 4)
+────────────────────────────────────────────────────────────────────────
+3D TENSOR (Rank 3) - Created by the Embedding Layer (Step 10)
+A deep, 3D block. Every single letter pulls out a hidden list of vectors
+projecting it into an abstract, multi-dimensional space:
+
+     /_/_/_/_/|
+    /_/_/_/_/||
+   /_/_/_/_/|||  <- Depth (The spatial numbers for each character)
+
+   |h|e|l|l|/||
+   |w|o|r|l|//
+   Shape: (batch_size, block_size, vocab_size)
+```
+<
+< # Why we call them all "Tensors"
+<
+< Instead of forcing you to change the name of the variable from Vector to Matrix to Cube every time the data changes shape, PyTorch uses the word Tensor as an umbrella term.
+< - A 1D line of characters is a tensor.
+< - A 2D grid of batches is a tensor.
+< - A 3D block of embedded vectors is a tensor.
+<
+< You caught the exact nuance. Your data started as a simple 1D line, and we are about to push it into higher dimensions.
+<
+< Does seeing this progression from a 1D line to a 2D grid to a 3D block help clear up that hang-up?
+< 
+< If so, where would you like to go next?
+< - See exactly how the Embedding Layer creates that 3D depth
+< - Break down how the forward function handles this multi-dimensional data
+
+
+
+
+
+
+
+
+
 
