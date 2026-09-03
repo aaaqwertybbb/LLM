@@ -120,19 +120,19 @@
 < Create your train.py file and paste this exact code inside it:
 <
 < ```python
-< # 1. Open the file in read-only mode ('r') using UTF-8 encoding
-< with open("input.txt", "r", encoding="utf-8") as file:
-<     # 2. Read the entire text contents into a variable
-<     text = file.read()
-< 
-< # 3. Print the total number of characters in your dataset
-< print(f"Total characters: {len(text)}")
-< 
-< # 4. Print a divider line to make it look clean
-< print("-" * 20)
-< 
-< # 5. Print just the first 250 characters to test it out
-< print(text[:250])
+# 1. Open the file in read-only mode ('r') using UTF-8 encoding
+with open("input.txt", "r", encoding="utf-8") as file:
+    # 2. Read the entire text contents into a variable
+    text = file.read()
+
+# 3. Print the total number of characters in your dataset
+print(f"Total characters: {len(text)}")
+
+# 4. Print a divider line to make it look clean
+print("-" * 20)
+
+# 5. Print just the first 250 characters to test it out
+print(text[:250])
 < ```
 <
 < What to do next to run it:
@@ -190,3 +190,51 @@
 < Would you like to proceed?
 < - Show me the Python code to build a Character-Level Tokenizer for train.py
 < - Show me a visual example of how a Subword Tokenizer breaks down a complex sentence
+
+> Show me the Python code to build a Character-Level Tokenizer for train.py
+
+< Here is the clean, beginner-friendly Python code to build a Character-Level Tokenizer.
+< 
+< This code finds every unique character in your text, builds a "lookup dictionary" to translate letters to numbers (and vice versa), and encodes a sample sentence.
+<
+< # What happens when you run this?
+< 
+< If your input.txt contains a standard block of English text, running python train.py will turn the word "hello" into a list of 5 integers—like [43, 40, 47, 47, 50].
+< 
+< Those numbers represent the exact matrix addresses your future AI model will use to calculate patterns!
+< 
+< Now that you have a functioning tokenizer, where should we go next?
+< - Show me how to encode your entire input.txt file and save it as a data array
+< - Show me how to install PyTorch so we can load these numbers into AI hardware tensors
+
+> Which of your "where should we go next" would you recommend doing first?
+
+< I highly recommend installing PyTorch first.
+<
+< While it might seem counterintuitive to download a heavy tool before finishing the data prep, doing it now is much smarter for two main reasons:
+< 1. You want to avoid rewriting code later: If you encode your data using basic Python lists right now, you will just have to completely delete and rewrite that logic a few minutes later once PyTorch is active. It is much more efficient to handle the full, finalized text-to-tensor data array pipeline all at once.
+< 2. Environment & Verification: Getting PyTorch successfully installed can occasionally throw errors depending on your operating system or computer setup. Sorting it out right now gives you a clean, working environment so everything flows perfectly moving forward.
+<
+< # Step 1: Install PyTorch
+< |
+< Open your terminal and run the standard installation command.
+< - On Mac, Windows, or Linux (Standard CPU Installation):
+<     pip install torch
+< (Note: If your system uses pip3 instead of pip, run pip3 install torch instead)
+< 
+< Step 2: Verify It Works
+< | 
+< To make sure your computer successfully recognizes the library, create a brand new file right next to your others called test_torch.py and paste this into it:
+< ```python
+import torch
+
+# Create a small grid of random numbers (a Tensor)
+x = torch.rand(5, 3)
+
+print("PyTorch successfully installed!")
+print("Here is a test tensor:")
+print(x)
+< ```
+< 
+< 
+
