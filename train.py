@@ -62,14 +62,10 @@ batch_size = 4 # Number of independent text sequences to process in parallel
 def get_batch(split):
     # Select whether we are pulling from the training or validation set
     data = train_data if split == 'train' else val_data
-
-    # This is the point where everything turns to confusion for me
     
     # Generate random starting points in the data array
     # We subtract block_size so we don't accidentally overflow past the end of the text
     ix = torch.randint(len(data) - block_size, (batch_size,))
-    # ^
-    # torch.randint(low, high); ???
     
     # Stack the random inputs and targets into matrices
     x_batch = torch.stack([data[i:i+block_size] for i in ix])
@@ -79,6 +75,8 @@ def get_batch(split):
 
 # Grab a sample batch from our training split to test it
 xb, yb = get_batch('train')
+
+# This is the point where everything turns to confusion for me
 
 print("-" * 30)
 print(f"Inputs Batch Shape (xb):  {xb.shape}  -> (batch_size, block_size)") # console output: Inputs Batch Shape (xb):  torch.Size([4, 8])  -> (batch_size, block_size)
