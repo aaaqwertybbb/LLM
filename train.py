@@ -25,8 +25,6 @@ import torch
 
 all_encoded_data = encode(text)
 
-# This is the point where everything turns to confusion for me
-
 data_tensor = torch.tensor(all_encoded_data, dtype=torch.long)
 
 print("-" * 30)
@@ -60,6 +58,8 @@ for t in range(block_size):
 
 # 9. THE BATCH GENERATOR
 batch_size = 4 # Number of independent text sequences to process in parallel
+
+# This is the point where everything turns to confusion for me
 
 def get_batch(split):
     # Select whether we are pulling from the training or validation set
