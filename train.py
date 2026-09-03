@@ -45,3 +45,19 @@ print("-" * 30)
 print(f"Original Text: {sample_phrase}")
 print(f"Encoded Numbers: {encoded_phrase}")
 print(f"Decoded Back:   {decode(encoded_phrase)}")
+
+# ==========================================
+# 6. CONVERT THE ENTIRE DATASET INTO TENSORS
+# ==========================================
+import torch
+
+# Encode the entire text file into a massive list of integers
+all_encoded_data = encode(text)
+
+# Convert that list into a PyTorch Tensor (a heavy-duty data array)
+# 'torch.long' specifies that these numbers are large integers (64-bit)
+data_tensor = torch.tensor(all_encoded_data, dtype=torch.long)
+
+print("-" * 30)
+print(f"Dataset shape: {data_tensor.shape}")
+print(f"First 10 tokens as a Tensor: {data_tensor[:10]}")

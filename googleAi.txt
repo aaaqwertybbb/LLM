@@ -236,5 +236,87 @@ print("Here is a test tensor:")
 print(x)
 < ```
 < 
+< Run it in your terminal with python test_torch.py. If you see a grid of random decimals print out without any errors, your system is officially ready to build an AI!
 < 
+< Once you run this test, let me know if it prints successfully, and we can immediately jump back into train.py to encode your entire dataset directly into AI-ready hardware arrays (Tensors). 
 
+(WARNING: The script isympy.exe is installed in 'C:\Users\hunte\AppData\Roaming\Python\Python311\Scripts' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.)
+(WARNING: The scripts torchfrtrace.exe and torchrun.exe are installed in 'C:\Users\hunte\AppData\Roaming\Python\Python311\Scripts' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.)
+
+> I have 2 warning that essentially say the same thing...
+> 
+> ...
+
+< Yes, you should absolutely add that directory to your PATH.
+< While PyTorch itself will work fine for our current script without doing this, leaving it out will cause headaches later.
+< When a Python tool is installed "not on PATH," it means Windows cannot find or run that tool if you type its name directly into your terminal.
+< Adding it fixes this permanently.
+<
+< Here is the quickest way to fix this on Windows:
+< ...
+<
+< # Final Verification Step
+< 
+< To make the change take effect, completely close your current terminal window and open a brand new one.
+<
+< Once you open the new terminal, go ahead and run your verification script to confirm everything is running cleanly:
+<
+< ```bash
+python test_torch.py
+< ```
+<
+< Did the test_torch.py script successfully print out the grid of random numbers without any errors?
+< 
+< Once you confirm that is working, we can instantly jump right back into train.py to:
+< - Convert your entire text dataset into PyTorch tensors
+< - Set up the batching system so the AI can read data in chunks
+
+> I see the grid of random numbers but the first output the console was a warning:
+> "C:\Users\hunte\AppData\Roaming\Python\Python311\site-packages\torch\_subclasses\functional_tensor.py:368: UserWarning: Failed to initialize NumPy: No module named 'numpy' (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_numpy.cpp:84.)
+>  cpu = _conversion_method_template(device=torch.device("cpu"))"
+
+< You can completely ignore this warning for now.
+< 
+< The warning is just PyTorch letting you know that it cannot find NumPy (a standard math library for Python) on your computer.
+<
+< Because PyTorch uses NumPy behind the scenes to convert data back and forth, it displays this alert.
+< However, it automatically falls back to its own internal C++ engine, which is why your random grid of numbers still printed perfectly.
+<
+< To clean up your console and stop this message from popping up every time you run your code, you can easily install NumPy by running this command in your terminal:
+< ```bash
+pip install numpy
+< ```
+< Once that installation finishes, running python test_torch.py should be completely clean and silent, showing only your random grid.
+<
+< # Moving Forward with train.py
+< Now that your PyTorch environment is functional and verified, we can officially connect our Tokenizer logic to our new AI hardware arrays (Tensors).
+<
+< Open up your train.py file. We are going to add a new section at the bottom to convert your entire input.txt file into a massive numerical array that PyTorch can feed into a neural network.
+< 
+< Update the bottom of your train.py file (right after your sample_phrase test code) to include this:
+< ```python
+# ==========================================
+# 6. CONVERT THE ENTIRE DATASET INTO TENSORS
+# ==========================================
+import torch
+
+# Encode the entire text file into a massive list of integers
+all_encoded_data = encode(text)
+
+# Convert that list into a PyTorch Tensor (a heavy-duty data array)
+# 'torch.long' specifies that these numbers are large integers (64-bit)
+data_tensor = torch.tensor(all_encoded_data, dtype=torch.long)
+
+print("-" * 30)
+print(f"Dataset shape: {data_tensor.shape}")
+print(f"First 10 tokens as a Tensor: {data_tensor[:10]}")
+< ```
+<
+< What this does:
+<
+< When you run python train.py, your machine will instantly ingest the entire raw text file, translate every single character into its respective ID using your dictionary, and
+< pack it tightly into a highly optimized PyTorch data block (data_tensor) ready for deep learning math.
+< - Show me how to split this dataset into Training and Validation blocks (so we can test the AI's accuracy later)
+< - Show me how to create data chunks (Inputs and Targets) so the AI knows what text it is trying to predict
