@@ -253,6 +253,9 @@ def encode(string_input):
 # - Show me how to build the Embedding Layer (turning these integer lists into spatial AI vectors)
 # - Show me how to set up the Bigram Language Model blueprint neural network class
 
+# I was about to google "sycophancy meaning" but then I realized the AI might be insulted
+# when it sees that I googled that and think I want him to stop hyping me up.
+
 
 
 
