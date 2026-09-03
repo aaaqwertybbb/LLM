@@ -816,7 +816,8 @@ projecting it into an abstract, multi-dimensional space:
 < - See exactly how the Embedding Layer creates that 3D depth
 < - Break down how the forward function handles this multi-dimensional data
 
-
+omg lol I was sitting here trying to read 'ix = torch.randint(len(data) - block_size, (batch_size,))'
+I realized I didn't have the python extension installed for visual studio code once I added that,... I have so much more information now.
 
 
 
