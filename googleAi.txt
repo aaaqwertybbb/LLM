@@ -1095,7 +1095,78 @@ targets_flat = targets.view(B*T)   # Squishes (4, 8)     into (32)
 < - Show me how to write the Training Loop to make the model learn and lower its loss
 < - Show me how to add a Generation function to the class so the model can type out its own text
 
+> Which would you recommend first?
 
+< I highly recommend writing the Generation function first.
+<
+< It is incredibly rewarding to see the model type things out before you train it.
+<
+< Right now, your model's embedding spreadsheet is completely filled with random, uninitialized numbers.
+< If you write the generation function first and run it, the model will output absolute gibberish—a completely chaotic string of random letters and punctuation.
+< 
+< Then, when you write the Training Loop immediately after, you can run the generator again and watch the gibberish magically transform into real, structured English words right before your eyes!
+<
+< Step 1: Add the Generation Function to BigramLanguageModel
+<
+< We will add a function called generate inside your model class. This function takes a starting character, looks up the predictions, picks the most likely next character,
+< appends it, and repeats the process over and over.
+<
+< Open your train.py and update your BigramLanguageModel class so that the generate function sits right underneath the forward function:
+< ```python
+# ==========================================
+# 11. THE GENERATION ENGINE
+# ==========================================
+def generate(self, idx, max_new_tokens):
+    # idx is a (B, T) matrix of character integers in the current context
+    for _ in range(max_new_tokens):
+        # 1. Get the predictions for the next characters
+        logits, loss = self.forward(idx)
+        
+        # 2. Focus ONLY on the very last time step (-1) to predict the future
+        logits = logits[:, -1, :] # Becomes shape (B, C)
+        
+        # 3. Apply a Softmax mathematical formula to convert raw scores into percentages
+        probs = F.softmax(logits, dim=-1) # Shape (B, C)
+        
+        # 4. Sample randomly from that percentage distribution to get the next character ID
+        idx_next = torch.multinomial(probs, num_samples=1) # Shape (B, 1)
+        
+        # 5. Glue the new character ID onto the end of our ongoing running sequence
+        idx = torch.cat((idx, idx_next), dim=1) # Shape (B, T+1)
+        
+    return idx
+< ```
+<
+< Step 2: Test the Untrained Model at the Bottom of your File
+<
+< Now, let's go to the absolute bottom of your train.py file (underneath your model testing code) and ask it to generate 100 characters starting from a blank newline character:
+< ```python
+# Create a 1x1 matrix containing just the integer 0 (assuming 0 is a newline or space token)
+# This acts as our "seed" or starting point for the text generation
+context = torch.zeros((1, 1), dtype=torch.long)
 
+# Ask the model to generate 100 brand new tokens, decode the array back to text, and print it
+print("-" * 30)
+# We call model.generate, extract the 0th batch row, convert it to a standard Python list, and decode it
+print("UNTRAINED MODEL OUTPUT:")
+print(decode(model.generate(context, max_new_tokens=100)[0].tolist()))
+print("-" * 30)
+< ```
+<
+< # What You Will See When You Run It
+< 
+< Run `python train.py` in your terminal. Because the model has zero training, it will output a 100-character wall of total nonsense—like qZ;m!9xA ....
+< 
+< Once you see this beautifully chaotic text output, let me know, and we will write the final Training Loop to optimize those weights and teach this AI how to spell!
+<
+< Did your untrained model successfully output a string of random text gibberish without crashing?
 
+The "diff" in console output:
+```myConsoleOutput
+------------------------------
+UNTRAINED MODEL OUTPUT:
 
+p r,Dkfwg (rwhccubr, t.EsDsiohpdrlwhdf
+goMkEgdf(fxrf.h ,
+."mDr(.t"cbkfo(fDxck.ccvvewElvc(.dfDr,c(rM,
+```

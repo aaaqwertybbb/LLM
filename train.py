@@ -122,6 +122,29 @@ class BigramLanguageModel(nn.Module):
             
         return logits, loss
 
+    # ==========================================
+    # 11. THE GENERATION ENGINE
+    # ==========================================
+    def generate(self, idx, max_new_tokens):
+        # idx is a (B, T) matrix of character integers in the current context
+        for _ in range(max_new_tokens):
+            # 1. Get the predictions for the next characters
+            logits, loss = self.forward(idx)
+            
+            # 2. Focus ONLY on the very last time step (-1) to predict the future
+            logits = logits[:, -1, :] # Becomes shape (B, C)
+            
+            # 3. Apply a Softmax mathematical formula to convert raw scores into percentages
+            probs = F.softmax(logits, dim=-1) # Shape (B, C)
+            
+            # 4. Sample randomly from that percentage distribution to get the next character ID
+            idx_next = torch.multinomial(probs, num_samples=1) # Shape (B, 1)
+            
+            # 5. Glue the new character ID onto the end of our ongoing running sequence
+            idx = torch.cat((idx, idx_next), dim=1) # Shape (B, T+1)
+            
+        return idx
+
 # Instantiate the model using our vocabulary size
 model = BigramLanguageModel(vocab_size)
 
@@ -131,6 +154,26 @@ print("-" * 30)
 print(f"Model successfully built!")
 print(f"Predictions matrix shape (logits): {logits.shape}")
 print(f"Initial raw error score (loss):     {loss.item():.4f}")
+
+# Create a 1x1 matrix containing just the integer 0 (assuming 0 is a newline or space token)
+# This acts as our "seed" or starting point for the text generation
+context = torch.zeros((1, 1), dtype=torch.long)
+
+# Ask the model to generate 100 brand new tokens, decode the array back to text, and print it
+print("-" * 30)
+# We call model.generate, extract the 0th batch row, convert it to a standard Python list, and decode it
+print("UNTRAINED MODEL OUTPUT:")
+print(decode(model.generate(context, max_new_tokens=100)[0].tolist()))
+print("-" * 30)
+
+
+
+
+
+
+
+
+
 
 
 # 5. TEST IT OUT
