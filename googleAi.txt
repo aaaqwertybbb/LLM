@@ -1029,4 +1029,3 @@ Where would you like to explore next inside this blueprint?
 - Show me how to write the Training Loop to make this model actually learn from its mistakes
 - Explain what B, T, C = logits.shape stands for
 
-(I just got done cooking a lb of 98% fat free ground chicken with sriracha added after cooking it I juist gotta down this rq)
