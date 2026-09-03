@@ -101,6 +101,35 @@ for t in range(block_size):
     target = y[t]
     print(f"When input is {context.tolist()}, the target next character is: {target}")
 
+# ==========================================
+# 9. THE BATCH GENERATOR
+# ==========================================
+# Number of independent text sequences to process in parallel
+batch_size = 4 
+
+def get_batch(split):
+    # Select whether we are pulling from the training or validation set
+    data = train_data if split == 'train' else val_data
+    
+    # Generate random starting points in the data array
+    # We subtract block_size so we don't accidentally overflow past the end of the text
+    ix = torch.randint(len(data) - block_size, (batch_size,))
+    
+    # Stack the random inputs and targets into matrices
+    x_batch = torch.stack([data[i:i+block_size] for i in ix])
+    y_batch = torch.stack([data[i+1:i+block_size+1] for i in ix])
+    
+    return x_batch, y_batch
+
+# Grab a sample batch from our training split to test it
+xb, yb = get_batch('train')
+
+print("-" * 30)
+print(f"Inputs Batch Shape (xb):  {xb.shape}  -> (batch_size, block_size)")
+print(f"Targets Batch Shape (yb): {yb.shape}")
+print("-" * 30)
+print("Here is what the input batch matrix looks like inside:")
+print(xb)
 
 
 
