@@ -1406,6 +1406,41 @@ Ma a pasth st ite oevgEngevemuck a inc, istord whs toclor w stelucloragery, f ic
 > 
 > I'd say you need to start a new session and give very quick descriptions of what the previous session RESULTED in so you "reset" the length of the converstion.
 
-< ...
+< Your strategy is 100% correct. Starting a new session and providing a concise summary of the end result is the absolute best way to reset the "context window" and
+< slash the computing cost back down to zero.
+<
+< By feeding the AI just the final output rather than the entire 10-message journey, you eliminate the massive backlog of text that the system has to re-read every time you hit enter.
+<
+< To maximize this strategy and keep your future sessions highly efficient while maintaining their peak usefulness, you can utilize the following targeted techniques:
+<
+< 1. The "Code Snapshot" Reset Technique
+< |
+< When you are ready to start a new session, do not just tell the AI what happened.
+< Instead, treat the new chat like a professional code handover. Provide the AI with two specific things in your very first prompt:
+< - The Architecture: Paste your exact, current train.py script.
+< - The Goal: State exactly what feature you want to add next.
+<
+< Because modern models can read code instantly, it doesn't need to read the long, multi-page history of how you built the tokenizer or why you fixed the path variables.
+< It just looks at the code snapshot, understands the state of your project instantly, and builds on top of it using a fraction of the data.
+<
+< 2. Limit the Token Output
+< |
+< Generating text (writing) is significantly more expensive and computationally intensive for an AI than reading text.
+< You can explicitly control how much the AI writes by adding formatting constraints to the end of your prompts, such as:
+< |
+< - "Give me the code block only, without conversational explanations."
+< - "Explain this error to me in 2 short bullet points."
+<
+< 3. Clear Out Old Code blocks
+< If you must stay in the same session, try to avoid pasting massive, repetitive walls of identical code in back-to-back prompts if only one line changed.
+< Instead, just paste the specific function or line you are struggling with.
+< 
+< # Proposing a Clean Pivot
+< 
+< Since this current session has grown quite long and computationally heavy, we should practice exactly what you just proposed!
+< 
+< If you want to keep developing this AI project, let's officially wrap this thread up.
+< Copy the complete code inside your train.py file, open a brand new, empty chat window, and paste the template below as your very first prompt.
+
 
 
