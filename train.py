@@ -359,6 +359,51 @@ print("-" * 30)
 print("Here is what the input batch matrix looks like inside:")
 print(xb)
 
+import torch.nn as nn
+from torch.nn import functional as F
+
+# ==========================================
+# 10. THE NEURAL NETWORK BLUEPRINT
+# ==========================================
+
+class BigramLanguageModel(nn.Module):
+    
+    def __init__(self, vocab_size):
+        super().__init__()
+        # The Embedding Layer lives here! 
+        # It's a massive table of size (vocab_size x vocab_size)
+        self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)
+        
+    def forward(self, idx, targets=None):
+        # idx and targets are both (batch_size, block_size) matrices of integers
+        
+        # Every integer in 'idx' looks up a corresponding row of vectors in the table
+        # logits represents the raw prediction scores for the next character
+        logits = self.token_embedding_table(idx) # Output shape: (batch_size, block_size, vocab_size)
+        
+        if targets is None:
+            loss = None
+        else:
+            # PyTorch's cross_entropy expects data to be shaped a specific way,
+            # so we flatten our matrices into vectors to calculate the error (loss)
+            B, T, C = logits.shape
+            logits_flat = logits.view(B*T, C)
+            targets_flat = targets.view(B*T)
+            
+            # Calculate how wrong the AI's guesses were compared to the actual targets
+            loss = F.cross_entropy(logits_flat, targets_flat)
+            
+        return logits, loss
+
+# Instantiate the model using our vocabulary size
+model = BigramLanguageModel(vocab_size)
+
+# Test it by feeding it our sample batch from earlier!
+logits, loss = model(xb, yb)
+print("-" * 30)
+print(f"Model successfully built!")
+print(f"Predictions matrix shape (logits): {logits.shape}")
+print(f"Initial raw error score (loss):     {loss.item():.4f}")
 
 
 

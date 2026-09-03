@@ -574,3 +574,88 @@ tensor([[23, 25, 13,  1,  2, 17, 14, 20],
 
   Then I'll go back to seeing further topics with the AI after.
 )
+
+> Which would you recommend first?
+
+< I highly recommend setting up the Bigram Language Model blueprint class first.
+<
+< Moving straight into the class structure is the absolute best path for two major reasons:
+< 1. Context Over Isolation: If we try to build the Embedding Layer by itself out in the open, it will just look like a floating piece of confusing math.
+<    By building the model structure first, you will see exactly where the embedding layer lives and how it fits into the broader architecture.
+< 2. Object-Oriented AI: All modern deep learning in PyTorch uses Python Classes.
+<    Setting up this blueprint now introduces you to the standard skeleton that every single AI model—from a simple bigram model to GPT-4—uses to process data.
+<
+< Step 1: Update your train.py
+< 
+< Let's write your very first neural network block! We will create a class called BigramLanguageModel.
+< Inside it, we will immediately place that Embedding Table you've been curious about.
+<
+< Add this code to the absolute bottom of your train.py file:
+< ```python
+import torch.nn as nn
+from torch.nn import functional as F
+
+# ==========================================
+# 10. THE NEURAL NETWORK BLUEPRINT
+# ==========================================
+
+class BigramLanguageModel(nn.Module):
+    
+    def __init__(self, vocab_size):
+        super().__init__()
+        # The Embedding Layer lives here! 
+        # It's a massive table of size (vocab_size x vocab_size)
+        self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)
+        
+    def forward(self, idx, targets=None):
+        # idx and targets are both (batch_size, block_size) matrices of integers
+        
+        # Every integer in 'idx' looks up a corresponding row of vectors in the table
+        # logits represents the raw prediction scores for the next character
+        logits = self.token_embedding_table(idx) # Output shape: (batch_size, block_size, vocab_size)
+        
+        if targets is None:
+            loss = None
+        else:
+            # PyTorch's cross_entropy expects data to be shaped a specific way,
+            # so we flatten our matrices into vectors to calculate the error (loss)
+            B, T, C = logits.shape
+            logits_flat = logits.view(B*T, C)
+            targets_flat = targets.view(B*T)
+            
+            # Calculate how wrong the AI's guesses were compared to the actual targets
+            loss = F.cross_entropy(logits_flat, targets_flat)
+            
+        return logits, loss
+
+# Instantiate the model using our vocabulary size
+model = BigramLanguageModel(vocab_size)
+
+# Test it by feeding it our sample batch from earlier!
+logits, loss = model(xb, yb)
+print("-" * 30)
+print(f"Model successfully built!")
+print(f"Predictions matrix shape (logits): {logits.shape}")
+print(f"Initial raw error score (loss):     {loss.item():.4f}")
+< ```
+< 
+< What this does:
+< When you run python train.py, PyTorch will construct the network structure, pass your 4x8 batch matrix (xb) through the Embedding Table,
+< calculate initial random predictions for the next characters, and output a loss score (which tells us exactly how terrible the untrained AI currently is at guessing the text).
+<
+< Now that the master blueprint is written, what would you like to demystify next?
+< 
+< If you want, I can:
+< - Explain the forward function syntax and how data flows through it
+< - Show me how to write the Training Loop to make that loss score actually go down
+< - Explain exactly what an Embedding Layer is doing to our numbers spatially
+
+The "diff" in console output:
+```myConsoleOutput
+------------------------------
+Model successfully built!
+Predictions matrix shape (logits): torch.Size([4, 8, 33])
+Initial raw error score (loss):     4.0315
+```
+
+
