@@ -1360,3 +1360,7 @@ Ma a pasth st ite oevgEngevemuck a inc, istord whs toclor w stelucloragery, f ic
 < - Show me how to save this trained model's weights to a file so I don't lose them
 < - Explain how we upgrade this model's memory from 1 character to a whole sentence (The Self-Attention mechanism)
 < - Show me how to clean up the code and push it cleanly to GitHub
+
+> How much did this entire session cost Google behind the scenes?
+
+< ...
