@@ -308,6 +308,16 @@ print("-" * 30)
 print(f"Training data size:   {len(train_data)} tokens") # Training data size:   197 tokens
 print(f"Validation data size: {len(val_data)} tokens") # Validation data size: 22 tokens
 
+# Training data size:   197 tokens
+# Validation data size: 22 tokens
+# ---
+# 197 tokens
+#  22 tokens
+#
+# 197 + 22 => 219
+# ---
+# torch.Size([219])
+
 # ==========================================
 # 8. CREATE INPUT AND TARGET CHUNKS (X & Y)
 # ==========================================
