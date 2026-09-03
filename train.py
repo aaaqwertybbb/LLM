@@ -61,3 +61,25 @@ data_tensor = torch.tensor(all_encoded_data, dtype=torch.long)
 print("-" * 30)
 print(f"Dataset shape: {data_tensor.shape}")
 print(f"First 10 tokens as a Tensor: {data_tensor[:10]}")
+
+# ==========================================
+# 7. SPLIT INTO TRAINING & VALIDATION SETS
+# ==========================================
+# Calculate the index where the 90% mark sits
+n = int(0.9 * len(data_tensor))
+
+# The first 90% of the numerical array is for training
+train_data = data_tensor[:n]
+
+# The remaining 10% is for validating the AI's performance
+val_data = data_tensor[n:]
+
+print("-" * 30)
+print(f"Training data size:   {len(train_data)} tokens")
+print(f"Validation data size: {len(val_data)} tokens")
+
+
+
+
+
+

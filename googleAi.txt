@@ -320,3 +320,49 @@ print(f"First 10 tokens as a Tensor: {data_tensor[:10]}")
 < pack it tightly into a highly optimized PyTorch data block (data_tensor) ready for deep learning math.
 < - Show me how to split this dataset into Training and Validation blocks (so we can test the AI's accuracy later)
 < - Show me how to create data chunks (Inputs and Targets) so the AI knows what text it is trying to predict
+
+> Which would you recommend first?
+
+< I highly recommend splitting your dataset into Training and Validation blocks first.
+<
+< In machine learning and AI development, it is a critical golden rule to separate your data before you do any slicing, chunking, or processing.
+<
+< If you create your data chunks first and then split them randomly, a mathematical mistake called "Data Leakage" can easily happen.
+< This is where the end of a training sentence accidentally overlaps into the beginning of a validation sentence.
+< The AI would essentially be allowed to "cheat" by looking at fragments of the test data during its practice rounds, giving you a falsely high accuracy score
+<
+< By splitting the giant master array into two distinct, isolated blocks right now, we guarantee that the validation data remains 100% unseen and pure.
+<
+< Step 1: Update your train.py
+< Let's write the code to split your data. We will use 90% of your text file to train the AI, and save the remaining 10% to test how smart it actually is.
+<
+< Add this section directly to the bottom of your train.py file:
+<
+< ```python
+# ==========================================
+# 7. SPLIT INTO TRAINING & VALIDATION SETS
+# ==========================================
+# Calculate the index where the 90% mark sits
+n = int(0.9 * len(data_tensor))
+
+# The first 90% of the numerical array is for training
+train_data = data_tensor[:n]
+
+# The remaining 10% is for validating the AI's performance
+val_data = data_tensor[n:]
+
+print("-" * 30)
+print(f"Training data size:   {len(train_data)} tokens")
+print(f"Validation data size: {len(val_data)} tokens")
+< ```
+<
+< What this does:
+< When you run python train.py, it will cleanly slice your massive data_tensor into two isolated blocks: train_data and val_data.
+< 
+< Now that our boundaries are safely locked in place, we can move forward. What would you like to build next?
+< - Show me how to create Inputs and Targets chunks (the X and Y blocks the AI uses to guess the next letter)
+< - Show me how to wrap that chunking logic into a Batch Generator so our model can read multiple lines of text at once
+
+
+
+
