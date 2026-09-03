@@ -1400,5 +1400,12 @@ Ma a pasth st ite oevgEngevemuck a inc, istord whs toclor w stelucloragery, f ic
 < - Show me how to save your trained AI weights into a .pt file so you can load your model anytime without re-training
 < - Show me how to clean up your directory and push it cleanly to GitHub
 
+> What can I do to keep the cost of my sessions low, while maintaining their usefulness?
+> 
+> From what you said, if I give an example for how I could continue this session while keeping the cost of further questions low...
+> 
+> I'd say you need to start a new session and give very quick descriptions of what the previous session RESULTED in so you "reset" the length of the converstion.
+
+< ...
 
 
