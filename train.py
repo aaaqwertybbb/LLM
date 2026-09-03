@@ -270,9 +270,9 @@ sample_phrase = "hello"
 encoded_phrase = encode(sample_phrase)
 
 print("-" * 30)
-print(f"Original Text: {sample_phrase}")
-print(f"Encoded Numbers: {encoded_phrase}")
-print(f"Decoded Back:   {decode(encoded_phrase)}")
+print(f"Original Text: {sample_phrase}") # console output: Original Text: hello
+print(f"Encoded Numbers: {encoded_phrase}") # console output: Encoded Numbers: [17, 14, 20, 20, 23]
+print(f"Decoded Back:   {decode(encoded_phrase)}") # console output: Decoded Back:   hello
 
 # ==========================================
 # 6. CONVERT THE ENTIRE DATASET INTO TENSORS
@@ -289,8 +289,8 @@ all_encoded_data = encode(text)
 data_tensor = torch.tensor(all_encoded_data, dtype=torch.long)
 
 print("-" * 30)
-print(f"Dataset shape: {data_tensor.shape}")
-print(f"First 10 tokens as a Tensor: {data_tensor[:10]}")
+print(f"Dataset shape: {data_tensor.shape}") # console output: Dataset shape: torch.Size([219])
+print(f"First 10 tokens as a Tensor: {data_tensor[:10]}") # console output: First 10 tokens as a Tensor: tensor([ 7, 14, 20, 14, 27, 14,  1, 30, 17, 10])
 
 # ==========================================
 # 7. SPLIT INTO TRAINING & VALIDATION SETS
@@ -305,8 +305,8 @@ train_data = data_tensor[:n]
 val_data = data_tensor[n:]
 
 print("-" * 30)
-print(f"Training data size:   {len(train_data)} tokens")
-print(f"Validation data size: {len(val_data)} tokens")
+print(f"Training data size:   {len(train_data)} tokens") # Training data size:   197 tokens
+print(f"Validation data size: {len(val_data)} tokens") # Validation data size: 22 tokens
 
 # ==========================================
 # 8. CREATE INPUT AND TARGET CHUNKS (X & Y)
@@ -321,8 +321,8 @@ x = train_data[:block_size]
 y = train_data[1:block_size+1]
 
 print("-" * 30)
-print(f"Input Tensor (x):  {x}")
-print(f"Target Tensor (y): {y}")
+print(f"Input Tensor (x):  {x}") # Input Tensor (x):  tensor([ 7, 14, 20, 14, 27, 14,  1, 30])
+print(f"Target Tensor (y): {y}") # Target Tensor (y): tensor([14, 20, 14, 27, 14,  1, 30, 17])
 print("-" * 30)
 
 # Visual explanation of what the AI sees character-by-character
@@ -355,11 +355,14 @@ def get_batch(split):
 xb, yb = get_batch('train')
 
 print("-" * 30)
-print(f"Inputs Batch Shape (xb):  {xb.shape}  -> (batch_size, block_size)")
-print(f"Targets Batch Shape (yb): {yb.shape}")
+print(f"Inputs Batch Shape (xb):  {xb.shape}  -> (batch_size, block_size)") # console output: Inputs Batch Shape (xb):  torch.Size([4, 8])  -> (batch_size, block_size)
+print(f"Targets Batch Shape (yb): {yb.shape}") # console output: Targets Batch Shape (yb): torch.Size([4, 8])
 print("-" * 30)
 print("Here is what the input batch matrix looks like inside:")
-print(xb)
+print(xb) # console output: tensor([[20, 14, 27, 14,  1, 30, 17, 10],
+          #                         [20, 14, 10, 26, 27,  1, 10,  1],
+          #                         [ 5,  1, 23, 25,  1, 10,  1, 24],
+          #                         [27,  1,  3, 10, 27,  1, 20, 14]])
 
 import torch.nn as nn
 from torch.nn import functional as F
