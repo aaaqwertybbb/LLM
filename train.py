@@ -52,6 +52,79 @@ char_to_int = { ch:i for i,ch in enumerate(chars) }
 # The previous "reverse the order of each loops result" gives you an enumerable object of properties
 # which is then given to the '{ }' pattern syntax to programmatically generate the object.
 # This object is just 1 or many 'property'-'value' relationships and thus it is described as a dictionary.
+#
+# ========================================
+#
+# > I am reading over the code and I added comments that explain how I'm interpreting the code. Would you have any feedback on what my comments say?
+# ```python
+# ==========================================
+# 3. BUILD THE LOOKUP DICTIONARIES
+# ==========================================
+# ... (the missing text here was included in the prompt)
+# This object is just 1 or many 'property'-'value' relationships and thus it is described as a dictionary.
+# ```
+# 
+# Your speculation is incredibly close to the target, and your intuition about how data flows in Python is spot on! You have correctly reverse-engineered the core behavior.
+# 
+# Here is some precise feedback to refine your mental model from "speculation" to absolute certainty, breaking down exactly what Python is doing under the hood.
+#
+# 1. The enumerate and Multi-Variable Part (100% Correct)
+# |
+# Your guess about how variables are assigned here is perfectly accurate.
+# |
+# - enumerate(chars) takes your list of characters and yields pairs of data: (0, 'a'), (1, 'b'), (2, 'c').
+# - Python allows Unpacking. By providing two variables (i, ch), you are telling Python:
+#   "Put the first item of the pair (the index) into i, and the second item (the character) into ch."
+# - To answer your question about more variables: It is only permissible if the generator returns more than two items.
+#   If a function returns triples, you could do for x, y, z in .... If you provide the wrong number of variables, Python will crash with a ValueError.
+# 
+# 2. The { } and the Syntax (Refining the Terminology)
+# 
+# In Javascript or C#, {} creates an arbitrary object. In Python, {} with a colon inside creates a Dictionary (dict).
+#
+# What you are looking at is a highly elegant Python feature called a Dictionary Comprehension.
+# It isn't just generating an arbitrary object; it is a compact, high-speed way to write a for loop that populates a lookup table.
+#
+# Your re-write—ch:i (for i,ch in enumerate(chars))—is conceptually exactly how the interpreter reads it!
+# 
+# Here is the anatomy of what is happening:
+# 1. The Loop: for i, ch in enumerate(chars) runs first. It loops through your alphabet.
+# 2. The Key-Value Assignment: For every single loop, it looks at the left side of the expression: ch : i.
+# 3. The Insertion: It takes whatever is in ch (the character) and uses it as the Key (the index/address). It takes whatever is in i (the integer) and uses it as the Value.
+#
+# 3. Reversing the Order:
+# You mentioned it "reverses the order." To be precise, it isn't reversing the index sequence (it still goes 0, 1, 2...). What it is doing is swapping the roles of the data.
+# 
+# Notice the subtle difference between line 4 and line 7 in your script:
+# - Line 4 uses ch:i → Result: {'a': 0, 'b': 1} (Character points to Integer)
+# - Line 7 uses i:ch → Result: {0: 'a', 1: 'b'} (Integer points to Character)
+#
+# By switching the order on the left side of the colon, you instantly create two mirror-image lookup tables.
+# One is for encoding (letters to math), and one is for decoding (math back to letters).
+# 
+# # How to update your comments for maximum clarity
+# 
+# If you want to keep your notes perfectly aligned with standard Python engineering terms, you could update that section to look like this:
+#
+# ```python
+# # ==========================================
+# # 3. BUILD THE LOOKUP DICTIONARIES
+# # ==========================================
+# # 'enumerate(chars)' yields index-character pairs like (0, 'a'), (1, 'b')
+# # Using a 'Dictionary Comprehension' {key: value for ...}, we map them:
+# 
+# # Maps a string character to an integer ID: e.g., {'a': 0, 'b': 1}
+# char_to_int = { ch:i for i,ch in enumerate(chars) }
+# 
+# # Maps an integer ID back to a string character: e.g., {0: 'a', 1: 'b'}
+# int_to_char = { i:ch for i,ch in enumerate(chars) }
+# ```
+#
+# You are doing a fantastic job reading between the lines of a language you are new to. Where would you like to take our verified, working train.py script next?
+# - Show me how to build the Embedding Layer to turn these integer values into spatial vectors
+# - Show me how to set up the Bigram Language Model blueprint class structure
+
+
 
 # Maps an integer ID back to a string character: e.g., {0: 'a', 1: 'b', 2: 'c'}
 int_to_char = { i:ch for i,ch in enumerate(chars) }
