@@ -66,17 +66,25 @@ def get_batch(split):
     # Generate random starting points in the data array
     # We subtract block_size so we don't accidentally overflow past the end of the text
     ix = torch.randint(len(data) - block_size, (batch_size,))
+
+    # This is the point where everything turns to confusion for me
     
     # Stack the random inputs and targets into matrices
     x_batch = torch.stack([data[i:i+block_size] for i in ix])
     y_batch = torch.stack([data[i+1:i+block_size+1] for i in ix])
+    # ^
+    # I think this is saying 'x_batch[]'
+    # ...
+    # the next character from 'x_batch[0][0]' is equal to 'y_batch[0][0]'
+    #
+    # ...the more I look at this the less I feel like I understand it actually
     
     return x_batch, y_batch
 
 # Grab a sample batch from our training split to test it
 xb, yb = get_batch('train')
 
-# This is the point where everything turns to confusion for me
+
 
 print("-" * 30)
 print(f"Inputs Batch Shape (xb):  {xb.shape}  -> (batch_size, block_size)") # console output: Inputs Batch Shape (xb):  torch.Size([4, 8])  -> (batch_size, block_size)
