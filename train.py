@@ -318,6 +318,9 @@ print(f"Validation data size: {len(val_data)} tokens") # Validation data size: 2
 # ---
 # torch.Size([219])
 
+# I think what makes it confusing is that I haven't removed the "hello" example.
+# I keep thinking to myself how is it going from "hello" to 219 tokens total.
+
 # ==========================================
 # 8. CREATE INPUT AND TARGET CHUNKS (X & Y)
 # ==========================================
