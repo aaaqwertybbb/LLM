@@ -205,7 +205,8 @@ print("-" * 30)
 # 13. TEST THE TRAINED MODEL
 # ==========================================
 print("TRAINED MODEL OUTPUT:")
-print(decode(model.generate(context, max_new_tokens=100).tolist()))
+# Notice the [0] added right after generate(...)
+print(decode(model.generate(context, max_new_tokens=100)[0].tolist()))
 print("-" * 30)
 
 
