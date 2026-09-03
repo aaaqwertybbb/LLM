@@ -282,6 +282,8 @@ import torch
 # Encode the entire text file into a massive list of integers
 all_encoded_data = encode(text)
 
+# This is the point where everything turns to confusion for me
+
 # Convert that list into a PyTorch Tensor (a heavy-duty data array)
 # 'torch.long' specifies that these numbers are large integers (64-bit)
 data_tensor = torch.tensor(all_encoded_data, dtype=torch.long)
