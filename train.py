@@ -20,64 +20,32 @@ def encode(string_input):
 def decode(list_input):
     return "".join([int_to_char[i] for i in list_input])
 
-# ==========================================
 # 6. CONVERT THE ENTIRE DATASET INTO TENSORS
-# ==========================================
 import torch
 
-# Encode the entire text file into a massive list of integers
 all_encoded_data = encode(text)
 
 # This is the point where everything turns to confusion for me
 
-# Convert that list into a PyTorch Tensor (a heavy-duty data array)
-# 'torch.long' specifies that these numbers are large integers (64-bit)
 data_tensor = torch.tensor(all_encoded_data, dtype=torch.long)
 
 print("-" * 30)
 print(f"Dataset shape: {data_tensor.shape}") # console output: Dataset shape: torch.Size([219])
 print(f"First 10 tokens as a Tensor: {data_tensor[:10]}") # console output: First 10 tokens as a Tensor: tensor([ 7, 14, 20, 14, 27, 14,  1, 30, 17, 10])
 
-# ==========================================
 # 7. SPLIT INTO TRAINING & VALIDATION SETS
-# ==========================================
-# Calculate the index where the 90% mark sits
-n = int(0.9 * len(data_tensor))
-
-# The first 90% of the numerical array is for training
-train_data = data_tensor[:n]
-
-# The remaining 10% is for validating the AI's performance
-val_data = data_tensor[n:]
+n = int(0.9 * len(data_tensor)) # Calculate the index where the 90% mark sits
+train_data = data_tensor[:n]    # The first 90% of the numerical array is for training
+val_data = data_tensor[n:]      # The remaining 10% is for validating the AI's performance
 
 print("-" * 30)
 print(f"Training data size:   {len(train_data)} tokens") # Training data size:   197 tokens
 print(f"Validation data size: {len(val_data)} tokens") # Validation data size: 22 tokens
 
-# Training data size:   197 tokens
-# Validation data size: 22 tokens
-# ---
-# 197 tokens
-#  22 tokens
-#
-# 197 + 22 => 219
-# ---
-# torch.Size([219])
-
-# I think what makes it confusing is that I haven't removed the "hello" example.
-# I keep thinking to myself how is it going from "hello" to 219 tokens total.
-
-# ==========================================
 # 8. CREATE INPUT AND TARGET CHUNKS (X & Y)
-# ==========================================
-# Look at an 8-character window at a time
-block_size = 8
-
-# Grab the first 8 characters as our input (X)
-x = train_data[:block_size]
-
-# Grab the next 8 characters, shifted forward by exactly 1 slot (Y)
-y = train_data[1:block_size+1]
+block_size = 8                 # Look at an 8-character window at a time
+x = train_data[:block_size]    # Grab the first 8 characters as our input (X)
+y = train_data[1:block_size+1] # Grab the next 8 characters, shifted forward by exactly 1 slot (Y)
 
 print("-" * 30)
 print(f"Input Tensor (x):  {x}") # Input Tensor (x):  tensor([ 7, 14, 20, 14, 27, 14,  1, 30])
@@ -90,11 +58,8 @@ for t in range(block_size):
     target = y[t]
     print(f"When input is {context.tolist()}, the target next character is: {target}")
 
-# ==========================================
 # 9. THE BATCH GENERATOR
-# ==========================================
-# Number of independent text sequences to process in parallel
-batch_size = 4 
+batch_size = 4 # Number of independent text sequences to process in parallel
 
 def get_batch(split):
     # Select whether we are pulling from the training or validation set
@@ -126,9 +91,7 @@ print(xb) # console output: tensor([[20, 14, 27, 14,  1, 30, 17, 10],
 import torch.nn as nn
 from torch.nn import functional as F
 
-# ==========================================
 # 10. THE NEURAL NETWORK BLUEPRINT
-# ==========================================
 
 class BigramLanguageModel(nn.Module):
     
@@ -170,9 +133,7 @@ print(f"Predictions matrix shape (logits): {logits.shape}")
 print(f"Initial raw error score (loss):     {loss.item():.4f}")
 
 
-# ==========================================
 # 5. TEST IT OUT
-# ==========================================
 def testItOut():
     sample_phrase = "hello"
     encoded_phrase = encode(sample_phrase)
