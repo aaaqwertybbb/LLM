@@ -397,5 +397,48 @@ KeyError: 'h'
 I need to finish the current response first though.
 )
 
-< ...
+< Step 1: Update your train.py
+< 
+< Let's pick a small context window of 8 characters (in AI terminology, this is called the block_size or context_length).
+< We will grab a slice of data from your training set and separate it into x and y.
+< 
+< Add this section directly to the bottom of your train.py file:
+< 
+< ```python
+# ==========================================
+# 8. CREATE INPUT AND TARGET CHUNKS (X & Y)
+# ==========================================
+# Look at an 8-character window at a time
+block_size = 8
+
+# Grab the first 8 characters as our input (X)
+x = train_data[:block_size]
+
+# Grab the next 8 characters, shifted forward by exactly 1 slot (Y)
+y = train_data[1:block_size+1]
+
+print("-" * 30)
+print(f"Input Tensor (x):  {x}")
+print(f"Target Tensor (y): {y}")
+print("-" * 30)
+
+# Visual explanation of what the AI sees character-by-character
+for t in range(block_size):
+    context = x[:t+1]
+    target = y[t]
+    print(f"When input is {context.tolist()}, the target next character is: {target}")
+< ```
+< 
+< What this does:
+< When you run `python train.py`, you will see two matching lists of numbers. The target list y is identical to x, just slid over by one spot.
+<
+< The loop at the bottom will print out exactly how the neural network breaks this down into 8 distinct training scenarios. It learns that:
+< - When it sees character [A], it must predict [B].
+< - When it sees characters [A, B], it must predict [C].
+<
+< This simple shifting trick is how an LLM teaches itself to generate an infinite string of text, one character at a time!
+< - Show me how to bundle this into a Batch Generator to load multiple chunks simultaneously for the AI processor
+< - Show me how to build the Embedding Layer (the step where numbers get converted into spatial vectors)
+
+> 
 

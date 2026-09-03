@@ -78,6 +78,28 @@ print("-" * 30)
 print(f"Training data size:   {len(train_data)} tokens")
 print(f"Validation data size: {len(val_data)} tokens")
 
+# ==========================================
+# 8. CREATE INPUT AND TARGET CHUNKS (X & Y)
+# ==========================================
+# Look at an 8-character window at a time
+block_size = 8
+
+# Grab the first 8 characters as our input (X)
+x = train_data[:block_size]
+
+# Grab the next 8 characters, shifted forward by exactly 1 slot (Y)
+y = train_data[1:block_size+1]
+
+print("-" * 30)
+print(f"Input Tensor (x):  {x}")
+print(f"Target Tensor (y): {y}")
+print("-" * 30)
+
+# Visual explanation of what the AI sees character-by-character
+for t in range(block_size):
+    context = x[:t+1]
+    target = y[t]
+    print(f"When input is {context.tolist()}, the target next character is: {target}")
 
 
 
