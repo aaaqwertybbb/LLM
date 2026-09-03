@@ -952,7 +952,80 @@ Does seeing the rows stacked like this reinforce what you originally suspected? 
 - Show me how the Embedding Layer adds the 3D depth to this 2D grid
 - Show me how the forward function takes this x_batch and y_batch to calculate the final loss score
 
+> Okay I believe I understand everything until '# 10. THE NEURAL NETWORK BLUEPRINT' now.
 
+< You have officially crossed the bridge from data preparation to neural network engineering.
+< Everything you have written up to this point is the "pipeline"—now we are looking at the actual engine.
+<
+< Let's demystify exactly how this class structure works. In PyTorch, every single neural network is built using a Python Class
+< that inherits from a foundational blueprint called nn.Module.
+<
+< Think of nn.Module like a pre-built factory chassis that PyTorch provides.
+< By writing class BigramLanguageModel(nn.Module):, you are taking that chassis and customizing it with your own machinery.
+<
+< Every AI model class contains exactly two structural sections:
+<
+< # Part 1: The Initialization (__init__)
+< |
+< This is where you buy and install the machinery for your factory. It runs only once when you create the model.
+<
+< ```python
+def __init__(self, vocab_size):
+    super().__init__()
+    # This installs a lookup table of vectors inside your model
+    self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)
+< ```
+<
+< - super().__init__() simply connects your class to the core PyTorch systems behind the scenes.
+< - nn.Embedding(vocab_size, vocab_size) builds a massive spreadsheet of weights.
+< - For a Bigram Model: This spreadsheet is a square grid (e.g., 65 rows by 65 columns if your alphabet has 65 characters).
+<   Each row contains the "raw guessing scores" for what character should come next!
+<
+< # Part 2: The Forward Pass (forward)
+< |
+< This is the actual assembly line. Every time you pass a batch of text into the model (model(xb, yb)), the data moves directly through this function.
+<
+< ```python
+def forward(self, idx, targets=None):
+    logits = self.token_embedding_table(idx)
+< ```
+< 
+< 1. What are "Logits"?
+< 
+< In deep learning, Logits is just a fancy word for raw, unnormalized prediction scores.
+< - When your 4x8 batch matrix (idx) passes into the embedding table, it uses those integer tokens as coordinates to rip out specific rows from your spreadsheet.
+< - If your model sees the token for the letter 't', it pulls out the row for 't'.
+<   In that row, the score for 'h' might be 4.5, while the score for 'z' might be -2.1. The model is predicting that 'h' is highly likely to follow 't', and 'z' is highly unlikely.
+<
+< 2. Calculating the "Loss" (The Grading System)
+<
+< The rest of the forward function handles the grading sheet:
+< ```python
+if targets is None:
+    loss = None
+else:
+    B, T, C = logits.shape
+    logits_flat = logits.view(B*T, C)
+    targets_flat = targets.view(B*T)
+    loss = F.cross_entropy(logits_flat, targets_flat)
+< ```
+<
+< - If we don't give the model targets (like when we want it to just generate text freely), it skips this.
+< - If we do pass targets (yb), PyTorch uses .view() to flatten our nice 2D and 3D grids into flat 1D lists.
+<   Why? Because PyTorch’s mathematical grading function (F.cross_entropy) requires a clean, flat list of answers to compare against.
+< F.cross_entropy compares the model's guesses (logits_flat) against the true answers (targets_flat).
+< It outputs a single number: the Loss. A high loss means the model is guessing randomly; a low loss means it is predicting the text perfectly.
+<
+< Summary of the Workflow
+<
+< When you execute logits, loss = model(xb, yb) at the bottom of your script:
+< 1. Your batch of characters goes in.
+< 2. The model looks up its current guesses in the embedding table.
+< 3. The model flattens the grids and grades its own test using cross-entropy.
+< 4. It hands you back its raw guesses (logits) and its current error score (loss).
 
-
+Where would you like to explore next inside this blueprint?
+- Show me how an Embedding Layer actually translates a number into a vector
+- Show me how to write the Training Loop to make this model actually learn from its mistakes
+- Explain what B, T, C = logits.shape stands for
 
