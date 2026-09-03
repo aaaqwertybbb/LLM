@@ -39,13 +39,14 @@ char_to_int = { ch:i for i,ch in enumerate(chars) }
 #
 # I think I can rewrite this as:
 # 'ch:i (for i,ch in enumerate(chars))'
-# (^ so that I can emphasize the implicit operator, and that there are two operands: 'chi:i', and 'for i,ch in enumerate(chars)').
+# (^ so that I can emphasize the implicit operator, and that there are two operands: 'ch:i', and 'for i,ch in enumerate(chars)').
 # 
 # Perhaps you can provide either a function to be "applied" or you can write a code block when writing 'for i,ch in enumerate(chars)'.
 # So here, I presume they're applying a pattern to 'for i,ch in enumerate(chars)'.
 # So this is contains two pattern syntax.
-# { } is a pattern syntax.
-# 'chi:i ...' lets you select and it wants to select the output of each loop of 'for i,ch in enumerate(chars)'
+# - '{ }' is a pattern syntax to generate an arbitrary object which contains arbitrary fields.
+# - 'ch:i ...' is a pattern syntax to select 'ch:i' from '...'
+# 'ch:i ...' lets you select and it wants to select the output of each loop of 'for i,ch in enumerate(chars)'
 # and then reverse the order of each loops result.
 #
 # The previous "reverse the order of each loops result" gives you an enumerable object of properties
