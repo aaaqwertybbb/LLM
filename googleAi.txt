@@ -1170,3 +1170,107 @@ p r,Dkfwg (rwhccubr, t.EsDsiohpdrlwhdf
 goMkEgdf(fxrf.h ,
 ."mDr(.t"cbkfo(fDxck.ccvvewElvc(.dfDr,c(rM,
 ```
+
+> Yes
+
+< Fantastic! Seeing that raw, chaotic wall of text is exactly what we wanted.
+< It proves that the entire pipeline—from reading the files, encoding characters, creating matrices, passing them into the model,
+< converting scores to probabilities, and decoding them back into characters—is 100% functional.
+< 
+< Right now, the AI is essentially a toddler typing randomly on a keyboard because its internal spreadsheet weights are completely random.
+< 
+< Now, we are going to add the final piece of the puzzle: The Training Loop. This is where we show the AI its mistakes, calculate how wrong it is, and
+< use an algorithm called an Optimizer to subtly nudge its spreadsheet weights so its guesses get closer and closer to your actual input.txt data.
+<
+< Step 1: Add the Training Loop
+< Go to the absolute bottom of your train.py file (below your untrained generation test code) and paste this training sequence:
+< ```python
+# ==========================================
+# 12. THE TRAINING ENGINE (THE OPTIMIZER)
+# ==========================================
+# Create a PyTorch Optimizer (AdamW is the standard industry-strength choice)
+# It takes our model's weights and a learning rate (how fast it should adjust things)
+optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
+
+print("Training the model... please wait a few seconds...")
+print("-" * 30)
+
+# We will run the training loop for 10,000 rounds (steps)
+for steps in range(10000):
+    
+    # 1. Grab a fresh, random batch of training data (Inputs and Targets)
+    xb, yb = get_batch('train')
+    
+    # 2. Feed the batch to the model to get the predictions and the error score
+    logits, loss = model(xb, yb)
+    
+    # 3. Wipe out the memory of old calculations from the previous step
+    optimizer.zero_grad(set_to_none=True)
+    
+    # 4. Perform "Backpropagation" - calculate how much each weight contributed to the error
+    loss.backward()
+    
+    # 5. Tell the optimizer to tweak the weights based on the calculation above
+    optimizer.step()
+    
+    # Every 2,000 steps, let's print out our progress to see the error drop
+    if steps % 2000 == 0:
+        print(f"Step {steps:5d} | Current Loss: {loss.item():.4f}")
+
+print(f"Step 10000 | Final Loss: {loss.item():.4f}")
+print("-" * 30)
+
+# ==========================================
+# 13. TEST THE TRAINED MODEL
+# ==========================================
+print("TRAINED MODEL OUTPUT:")
+print(decode(model.generate(context, max_new_tokens=100).tolist()))
+print("-" * 30)
+< ```
+<
+< Step 2: Run Your Completed Script!
+<
+< Save your file and run it one more time in your terminal:
+<
+< ```bash
+python train.py
+< ```
+< 
+< What to Look For:
+< 1. The Loss Drop: You will watch the terminal print out steps. The Current Loss should start high (usually around 4.0 or higher depending on your alphabet size) and
+<    rapidly decrease down toward 2.4 or lower.
+< 2. The Output Transformation: Look closely at the TRAINED MODEL OUTPUT at the very bottom. Because this is a simple Bigram model
+<    (it only looks at one letter to guess the next letter), it won't be writing perfect Shakespearean prose just yet.
+<    However, instead of the complete chaotic symbols from earlier, you will see it typing text that looks distinctly like English words—containing real syllables,
+<    spaces in the right places, and basic structures!
+< 
+< Run the code and let me know:
+< - What was your starting loss versus your final loss?
+< - What did your trained model's output text look like?
+
+The "diff" in console output:
+```myConsoleOutput
+------------------------------
+Training the model... please wait a few seconds...
+------------------------------
+Step     0 | Current Loss: 3.8484
+Step  2000 | Current Loss: 2.1983
+Step  4000 | Current Loss: 1.8324
+Step  6000 | Current Loss: 1.7763
+Step  8000 | Current Loss: 1.5260
+Step 10000 | Final Loss: 1.6681
+------------------------------
+TRAINED MODEL OUTPUT:
+Traceback (most recent call last):
+  File "C:\Users\hunte\Repos\New folder (6)\LLM\train.py", line 208, in <module>
+    print(decode(model.generate(context, max_new_tokens=100).tolist()))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hunte\Repos\New folder (6)\LLM\train.py", line 21, in decode
+    return "".join([int_to_char[i] for i in list_input])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hunte\Repos\New folder (6)\LLM\train.py", line 21, in <listcomp>
+    return "".join([int_to_char[i] for i in list_input])
+                    ~~~~~~~~~~~^^^
+TypeError: unhashable type: 'list'
+```
+

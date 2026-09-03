@@ -166,6 +166,47 @@ print("UNTRAINED MODEL OUTPUT:")
 print(decode(model.generate(context, max_new_tokens=100)[0].tolist()))
 print("-" * 30)
 
+# ==========================================
+# 12. THE TRAINING ENGINE (THE OPTIMIZER)
+# ==========================================
+# Create a PyTorch Optimizer (AdamW is the standard industry-strength choice)
+# It takes our model's weights and a learning rate (how fast it should adjust things)
+optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
+
+print("Training the model... please wait a few seconds...")
+print("-" * 30)
+
+# We will run the training loop for 10,000 rounds (steps)
+for steps in range(10000):
+    
+    # 1. Grab a fresh, random batch of training data (Inputs and Targets)
+    xb, yb = get_batch('train')
+    
+    # 2. Feed the batch to the model to get the predictions and the error score
+    logits, loss = model(xb, yb)
+    
+    # 3. Wipe out the memory of old calculations from the previous step
+    optimizer.zero_grad(set_to_none=True)
+    
+    # 4. Perform "Backpropagation" - calculate how much each weight contributed to the error
+    loss.backward()
+    
+    # 5. Tell the optimizer to tweak the weights based on the calculation above
+    optimizer.step()
+    
+    # Every 2,000 steps, let's print out our progress to see the error drop
+    if steps % 2000 == 0:
+        print(f"Step {steps:5d} | Current Loss: {loss.item():.4f}")
+
+print(f"Step 10000 | Final Loss: {loss.item():.4f}")
+print("-" * 30)
+
+# ==========================================
+# 13. TEST THE TRAINED MODEL
+# ==========================================
+print("TRAINED MODEL OUTPUT:")
+print(decode(model.generate(context, max_new_tokens=100).tolist()))
+print("-" * 30)
 
 
 
