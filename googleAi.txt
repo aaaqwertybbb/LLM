@@ -165,6 +165,7 @@
 < - Character-Level: The AI looks at text one letter or punctuation mark at a time (e.g., h, e, l, l, o)
 < - Word-Level: The AI looks at text one complete word at a time (e.g., hello)
 <
+< # Direct Comparison
 < (A chart comparing): 'Feature' - 'Character-Level (Letters)' - 'Word-Level (Whole Words)':
 <
 < Feature                       | Character-Level (Letters)                                                                                            | Word-Level (Whole Words)
@@ -174,4 +175,18 @@
 < Memory & Computation          | Low RAM needed because the lookup table is tiny. However, sentences become very long (many tokens per sentence).     | High RAM needed to store a massive dictionary. Sentences are shorter (fewer tokens per sentence).
 < Spelling Skills               | The AI must learn how to spell words from scratch by guessing the next letter. It often invents fake words early on. | The AI never misspells because it only operates on perfect, pre-existing words.
 < 
+< # Why Modern LLMs Choose a Middle Ground
+< |
+< If you look at production models like Gemini or GPT-4, they actually use a hybrid approach called Subword Tokenization (like Byte-Pair Encoding).
+< |
+< - It splits common words into whole pieces (e.g., hello) but breaks rare or complex words into smaller letter chunks (e.g., pre + conditioned).
+< - This gives them the best of both worlds: a manageable vocabulary size and the ability to handle brand-new or misspelled words.
 <
+< # Recommendation for Your Project
+< |
+< For your repository, we should build a Character-Level Tokenizer. It requires only about 10 lines of standard Python, uses zero third-party tools, and
+< lets you see the core math perfectly without overloading your computer.
+< 
+< Would you like to proceed?
+< - Show me the Python code to build a Character-Level Tokenizer for train.py
+< - Show me a visual example of how a Subword Tokenizer breaks down a complex sentence
