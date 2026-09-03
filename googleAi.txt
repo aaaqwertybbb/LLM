@@ -440,5 +440,58 @@ for t in range(block_size):
 < - Show me how to bundle this into a Batch Generator to load multiple chunks simultaneously for the AI processor
 < - Show me how to build the Embedding Layer (the step where numbers get converted into spatial vectors)
 
+> We've been modifying train.py for a while now. But I realize the entire time, after I pasted the code I'd go to run 'python train.py' in the terminal. But I was just using terminal history and in actuality I was just running test_torch.py over and over.
 > 
+> So it turns out that my train.py has errors when running.
+> The error specifically is:
+> "
+> Unique characters (Vocabulary Size): 8
+> Traceback (most recent call last):
+>   File "C:\Users\hunte\Repos\New folder (6)\LLM\train.py", line 42, in <module>
+>     encoded_phrase = encode(sample_phrase)
+>   File "C:\Users\hunte\Repos\New folder (6)\LLM\train.py", line 32, in encode
+>     return [char_to_int[c] for c in string_input]
+>   File "C:\Users\hunte\Repos\New folder (6)\LLM\train.py", line 32, in <listcomp>
+>     return [char_to_int[c] for c in string_input]
+> KeyError: 'h'
+> "
+
+< That is a classic development moment—running the wrong file in the history happens to everyone! Don't sweat it at all. Finding this out now is a great catch.
+<
+< The error you are seeing is a KeyError: 'h'.
+<
+< This means your tokenizer went to look up the letter 'h' in its dictionary, but it couldn't find it.
+< The giveaway is the line right above the error: Unique characters (Vocabulary Size): 8. Your input.txt file only contains 8 unique characters,
+< which means it is missing most of the alphabet—including the letter 'h' in the test phrase "hello".
+< 
+< This usually happens if your input.txt is empty, contains only a tiny placeholder phrase (like "test 123"), or hasn't been saved yet.
+< 
+< # How to Fix It
+< |
+< We need to give your model a real dataset to read so its vocabulary dictionary includes all standard English letters.
+< |
+< 1. Open your input.txt file.
+< 2. Delete whatever is in there and paste a much larger block of English text (at least a few paragraphs of a news article, a story, or a poem).
+<    Make sure it includes the word "hello" or at least the letters h, e, l, and o.
+< 3. Save the input.txt file.
+< 4. Run the correct file in your terminal:
+< ```bash
+< python train.py
+< ```
+<
+< # What You Should See
+<
+< Once input.txt has a healthy amount of text, your Vocabulary Size will jump up significantly
+< (usually to around 30 to 65 unique characters depending on punctuation).
+<
+< The script will then successfully translate "hello", slice up your data tensor, split it 90/10, and
+< output the character-by-character prediction scenarios we set up last time without crashing.
+< 
+< Give that text paste a shot and run python train.py!
+< 
+< Let me know:
+< - What the new Vocabulary Size number is once it runs successfully.
+< - If any other errors pop up further down the script.
+
+
 

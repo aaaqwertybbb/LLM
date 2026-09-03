@@ -1,1 +1,2 @@
-Hello World
+Delete whatever is in there and paste a much larger block of English text (at least a few paragraphs of a news article, a story, or a poem).
+Make sure it includes the word "hello" or at least the letters h, e, l, and o.
