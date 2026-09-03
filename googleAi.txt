@@ -71,8 +71,13 @@
 < |
 < This is where the massive divide in scale occurs:
 <
-< (A chart comparing): 'Scale' - 'Training Time & Hardware' - 'What it Can Do' - 'Cost'
-< (not going to type out the chart)
+< (A chart comparing): 'Scale' - 'Training Time & Hardware' - 'What it Can Do' - 'Cost':
+< 
+< Scale                     | Training Time & Hardware                                                                  | What it Can Do                                                                                     | Cost
+< -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+< Toy / Nano Model          | ~1 to 4 hours on a standard consumer laptop GPU                                           | Generates text that looks like English and mimics the style of your dataset, but lacks deep logic. | Free
+< Small Specialized Model   | A few days using rented cloud GPUs (e.g., Google Colab or AWS).                           | Can be fine-tuned to handle specific tasks, basic classification, or simple autocomplete           | $50 - $500
+< Frontier Commercial Model | Months of continuous training on tens of thousands of linked enterprise chips (TPUs/GPUs) | Advanced reasoning, coding, translation, and multimodal features.                                  | $10,000,000+
 <
 < # How to Get Started
 < |
