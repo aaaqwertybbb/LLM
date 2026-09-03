@@ -568,3 +568,9 @@ tensor([[23, 25, 13,  1,  2, 17, 14, 20],
         [22,  1, 27, 17, 14, 25, 14,  1]])
 ```
 
+(
+  I'm gonna stop seeing further topics with the AI
+  and just re-read the code / these notes / etc...
+
+  Then I'll go back to seeing further topics with the AI after.
+)
