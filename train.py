@@ -76,12 +76,6 @@ def get_batch(split):
 # Grab a sample batch from our training split to test it
 xb, yb = get_batch('train')
 
-
-# (I think I did understand that step actually, it's just I was confused on how that could at scale give accurate results
-#  but that's probably just later steps is all)
-# 
-# This is the point where everything turns to confusion for me
-
 print("-" * 30)
 print(f"Inputs Batch Shape (xb):  {xb.shape}  -> (batch_size, block_size)") # console output: Inputs Batch Shape (xb):  torch.Size([4, 8])  -> (batch_size, block_size)
 print(f"Targets Batch Shape (yb): {yb.shape}") # console output: Targets Batch Shape (yb): torch.Size([4, 8])
@@ -96,6 +90,8 @@ import torch.nn as nn
 from torch.nn import functional as F
 
 # 10. THE NEURAL NETWORK BLUEPRINT
+
+# This is the point where everything turns to confusion for me
 
 class BigramLanguageModel(nn.Module):
     
